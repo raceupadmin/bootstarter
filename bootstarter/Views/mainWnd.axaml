@@ -1,0 +1,137 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:bootstarter.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        x:Class="bootstarter.Views.mainWnd"                
+		Height="105" Width="250"
+		CanResize="False"
+		ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        ExtendClientAreaTitleBarHeightHint="-1"
+		WindowStartupLocation="CenterScreen">
+	
+    <Design.DataContext>
+        <vm:mainVM/>
+    </Design.DataContext>
+
+	<Window.Styles>
+		<Style Selector="TextBlock">
+			<Setter Property="FontFamily" Value="Inter"/>
+			<Setter Property="FontSize" Value="12"/>
+		</Style>
+	</Window.Styles>
+
+	<!--<Grid>
+		<Image
+			Source="/Assets/xtime_trim.png"
+			Width="90"
+			VerticalAlignment="Top"
+			HorizontalAlignment="Left"
+			Margin="10"/>
+		<TextBlock
+			Text="XTime Team"
+			Margin="105, 10, 0, 0"
+			FontSize="10"
+			FontWeight="Bold"
+			/>
+		<TextBlock
+			Text="Parser"
+			Margin="105, 30, 0, 0"
+			FontSize="22"
+			/>
+		<TextBlock
+			Text="Обновление"
+			HorizontalAlignment="Center"
+			Margin="10, 90, 0, 0"
+			FontSize="12"			
+			Grid.Row="0"/>
+		<ProgressBar
+			Value="50"
+			Grid.Row="1"
+			Margin="10, 90, 10, 0"/>
+	</Grid>-->
+	<!--<Grid
+		ColumnDefinitions="1*, 2*"
+		RowDefinitions="2*, 1*">
+		<Grid
+			Grid.Row="0"
+			Grid.Column="0">
+			<Image
+			Width="100"
+			Source="/Assets/xtime_trim.png"			
+			VerticalAlignment="Top"
+			HorizontalAlignment="Left"
+			Margin="10"/>
+		</Grid>
+		<Grid						
+			Grid.Row="0"
+			Grid.Column="1"
+			RowDefinitions="*, *">
+			<TextBlock
+				Text="XTime Team"
+				Grid.Row="0"
+				VerticalAlignment="Center"/>
+			<TextBlock
+				Text="Parser"
+				Grid.Row="1"
+				FontSize="22"
+				FontWeight="Bold"				
+				VerticalAlignment="Center"/>
+		</Grid>
+		<Grid			
+			Grid.Row="1"
+			Grid.ColumnSpan="2">
+			<TextBlock
+				Grid.Row="0"
+				Text="Обновление"
+				VerticalAlignment="Center"
+				HorizontalAlignment="Center"
+				/>
+			<ProgressBar
+				Grid.Row="1"				
+				VerticalAlignment="Bottom"/>
+		</Grid>
+	</Grid>-->
+
+	<Grid>
+		<StackPanel
+			VerticalAlignment="Top"
+			HorizontalAlignment="Left"
+			Orientation="Horizontal"
+			Margin="10">
+			<Image
+				Source="/Assets/xtime_trim.png"
+				Width="90"
+				VerticalAlignment="Center"
+				HorizontalAlignment="Center"/>
+			<Grid>
+				<TextBlock
+					VerticalAlignment="Top"
+					Margin="10, 8, 0, 0">
+					XTime Team
+				</TextBlock>
+				<TextBlock
+					Text="{Binding AppName}"
+					VerticalAlignment="Bottom"
+					Margin="10, 0, 0, 2"
+					FontSize="22"/>			
+			</Grid>						
+		</StackPanel>
+
+		<TextBlock
+			Text="{Binding Status}"
+			VerticalAlignment="Bottom"
+			HorizontalAlignment="Center"
+			Margin="17"/>
+
+		<ProgressBar
+			IsVisible="{Binding IsProgress}"
+			VerticalAlignment="Bottom"
+			Margin="10">		
+		</ProgressBar>
+
+	</Grid>
+
+</Window>

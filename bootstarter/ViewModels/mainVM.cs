@@ -1,21 +1,29 @@
+using bootstarter.Models.consoles;
+using bootstarter.Models.local;
 using bootstarter.Models.paths;
 using bootstarter.Models.remote;
+using bootstarter.Models.version;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Net;
 using System.Reactive;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace bootstarter.ViewModels
 {
     public class mainVM : ViewModelBase
     {
         #region vars
-        Paths paths = Paths.getInstance();
+        IPaths paths;
         IRemoteManager remoteManager;
+        ILocalManager localManager;
+        IConsole console;
         #endregion
 
         #region properties
@@ -46,6 +54,13 @@ namespace bootstarter.ViewModels
             get => isprogress;
             set => this.RaiseAndSetIfChanged(ref isprogress, value);
         }
+
+        float progress;
+        public float Progress
+        {
+            get => progress;
+            set => this.RaiseAndSetIfChanged(ref progress, value);
+        }
         #endregion
 
         #region commands
@@ -57,11 +72,19 @@ namespace bootstarter.ViewModels
 
             AppName = "Parser";
             AppVersion = "1.1";
-            Status = "Запуск";
+            Status = "";
             IsProgress = false;
 
-            #region dependencies     
+            #region dependencies    
+            paths = Paths.getInstance();
+
             remoteManager = new RemoteManager(paths.VerURL);
+            remoteManager.ProgressChangedEvent += (p, t) => {
+                Progress = (float)(p * 100f / t);
+            };
+
+            localManager = new LocalManager();
+            console = new bash(paths);
             #endregion
 
             #region commands
@@ -90,7 +113,39 @@ namespace bootstarter.ViewModels
         }
         public async void OnStarted()
         {
-            string remoteVersion = await remoteManager.GetVersion();
+            try
+            {
+                VersionFile remoteVersion = await remoteManager.GetVersion();
+                string localVersion = localManager.GetVersion();
+
+                if (!remoteVersion.Version.Equals(localVersion))
+                {
+                    Status = "Обновление...";
+                    IsProgress = true;
+                    await remoteManager.GetArchive();
+                    localManager.UnZipApp();
+                    localManager.UpdateVersionFile(remoteVersion);
+
+                }
+
+                IsProgress = false;
+                Status = "Запуск...";                
+
+                await Task.Run(() => {
+                    Thread.Sleep(1000);
+                });
+
+                console.Startup();
+
+                Process.GetCurrentProcess().Kill(); 
+
+                //start app
+
+            } catch (Exception ex)
+            {
+                //show error msg
+            }
+
         }
     }
 }

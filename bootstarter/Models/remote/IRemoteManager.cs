@@ -1,4 +1,5 @@
-﻿using System;
+﻿using bootstarter.Models.version;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,9 @@ namespace bootstarter.Models.remote
 {
     public interface IRemoteManager
     {
-        public Task<string> GetVersion();
-        public Task<bool> GetArchive();
+        public Task<VersionFile> GetVersion();
+        public Task GetArchive();
+
+        public event Action<double, double> ProgressChangedEvent;
     }
 }

@@ -1,11 +1,9 @@
 ﻿using bootstarter.Models.paths;
+using bootstarter.Models.version;
 using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace bootstarter.Models.remote
@@ -26,26 +24,37 @@ namespace bootstarter.Models.remote
                 double total = arg.TotalBytesToReceive;
                 double received = arg.BytesReceived;
 
-                ProgressChangedEvent?.Invoke(0, 0);
+                ProgressChangedEvent?.Invoke(received, total);
             };
         }
 
         #region public
-        public async Task<string> GetVersion()
-        {            
+        public async Task<VersionFile> GetVersion()
+        {
+
+            VersionFile res = new VersionFile();
+
             string tmpVerPath = Path.Combine(paths.TmpDir, "version.json");
+            if (File.Exists(tmpVerPath))
+                File.Delete(tmpVerPath);
             await webClient.DownloadFileTaskAsync(new System.Uri(paths.VerURL), tmpVerPath);
             var str = File.ReadAllText(tmpVerPath);
             JObject json = JObject.Parse(str);
             string? version = json["version"]?.ToString();
             if (version == null)
                 throw new Exception("Не удалось получить версию обновления");
-            return version;
+
+            res.Version = version;
+            res.File = str;
+
+            return res;
         }
 
-        public Task<bool> GetArchive()
-        {
-            throw new NotImplementedException();
+        public async Task GetArchive()
+        {            
+            if (File.Exists(paths.ZipPath))
+                File.Delete(paths.ZipPath);
+            await webClient.DownloadFileTaskAsync(new System.Uri(paths.ZipURL), paths.ZipPath);            
         }
         #endregion
 
@@ -54,4 +63,5 @@ namespace bootstarter.Models.remote
         #endregion
 
     }
+
 }

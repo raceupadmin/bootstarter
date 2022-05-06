@@ -8,29 +8,40 @@ using System.Threading.Tasks;
 
 namespace bootstarter.Models.paths
 {
-    public class Paths
+    public class Paths : IPaths
     {
         #region properties        
         public string VerPath { get; set; }
-        public string ZipPath => "";
-        public string AppPath => "";
-        public string TmpDir {get; set;}
-        public string VerURL => "";
-        public string ZipURL => "";        
+        public string ZipPath { get; set; }
+        public string AppDir { get; set; }
+        public string AppPath { get; set; }
+        public string TmpDir { get; set; }
+        public string VerURL { get; set; }
+        public string ZipURL { get; set; }
         #endregion
 
         private static Paths instance;
 
-        private Paths()
+        private Paths(string os)
         {
             //var settings = loadSettings();
-            initPaths();
+            switch (os)
+            {
+                case "mac":
+                    initPathsMac();
+                    break;
+                case "win":                    
+                    break;
+                default:
+                    break;
+            }
+            
         }
 
         public static Paths getInstance()
         {   
             if (instance == null)
-                instance = new Paths();
+                instance = new Paths("mac");
             return instance;
         }
 
@@ -42,23 +53,42 @@ namespace bootstarter.Models.paths
             return settings;
 
         }
-        void initPaths()
+        void initPathsMac()
         {            
             Settings settings = loadSettings();
             string user_path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             string product_path = Path.Combine(user_path,
-                                                $"Library",
-                                                $"Application Support",
+                                                "Library",
+                                                "Application Support",
                                                 settings.product_folder);
             if (!Directory.Exists(product_path))
                 Directory.CreateDirectory(product_path);
 
-            string tmp_path = Path.Combine(product_path, "tmp");
+            string app_dir = Path.Combine(user_path,
+                                            "Library",
+                                            "Application Support",
+                                            settings.product_folder,
+                                            settings.app_name);
+            if (!Directory.Exists(app_dir))
+                Directory.CreateDirectory(app_dir);
+
+            string tmp_path = Path.Combine(app_dir, "tmp");
             if (!Directory.Exists(tmp_path)) 
                 Directory.CreateDirectory(tmp_path);
 
+            TmpDir = tmp_path;
 
-            VerPath = $"{settings.update_url}/{settings.version_file}";
+            VerURL = $"{settings.update_url}/{settings.version_file}";
+
+            VerPath = Path.Combine(app_dir, settings.version_file);
+
+            ZipURL = $"{settings.update_url}/{settings.app_name}.app.zip".Replace(" ", "%20");
+
+            ZipPath = Path.Combine(app_dir, $"{settings.app_name}.zip");
+
+            AppDir = app_dir;
+
+            AppPath = Path.Combine(app_dir, $"{settings.app_name}.app");
 
         }        
         #endregion

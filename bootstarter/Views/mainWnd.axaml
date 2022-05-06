@@ -128,6 +128,7 @@
 
 		<ProgressBar
 			IsVisible="{Binding IsProgress}"
+			Value="{Binding Progress}"
 			VerticalAlignment="Bottom"
 			Margin="10">		
 		</ProgressBar>

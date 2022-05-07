@@ -15,5 +15,6 @@ namespace bootstarter.Views
             base.OnOpened(e);
             ((mainVM)DataContext).OnStarted();
         }
+       
     }
 }

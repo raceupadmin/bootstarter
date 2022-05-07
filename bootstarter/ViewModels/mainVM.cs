@@ -1,3 +1,4 @@
+using Avalonia.Threading;
 using bootstarter.Models.consoles;
 using bootstarter.Models.local;
 using bootstarter.Models.paths;
@@ -75,8 +76,10 @@ namespace bootstarter.ViewModels
             Status = "";
             IsProgress = false;
 
-            #region dependencies    
-            paths = Paths.getInstance();
+            #region dependencies
+           
+                paths = Paths.getInstance();
+            
 
             remoteManager = new RemoteManager(paths.VerURL);
             remoteManager.ProgressChangedEvent += (p, t) => {
@@ -111,28 +114,31 @@ namespace bootstarter.ViewModels
             });
             #endregion
         }
-        public async void OnStarted()
+        public async Task OnStarted()
         {
+
+            Status = "Проверка обновлений...";
+
             try
             {
                 VersionFile remoteVersion = await remoteManager.GetVersion();
                 string localVersion = localManager.GetVersion();
-
+                
                 if (!remoteVersion.Version.Equals(localVersion))
                 {
-                    Status = "����������...";
+                    Status = "Загрузка...";
                     IsProgress = true;
-                    await remoteManager.GetArchive();
+                    await remoteManager.GetArchive();               
                     localManager.UnZipApp();
                     localManager.UpdateVersionFile(remoteVersion);
 
                 }
 
-                IsProgress = false;
-                Status = "������...";                
+                //IsProgress = false;
+                Status = "Запуск...";
 
                 await Task.Run(() => {
-                    Thread.Sleep(1000);
+                    Thread.Sleep(2000);
                 });
 
                 console.Startup();

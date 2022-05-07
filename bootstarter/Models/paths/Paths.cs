@@ -48,8 +48,15 @@ namespace bootstarter.Models.paths
         #region private
         Settings loadSettings()
         {
-            string json = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "settings.json"));            
-            Settings settings = JsonConvert.DeserializeObject<Settings>(json);
+            //string json = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "settings.json"));            
+            //Settings settings = JsonConvert.DeserializeObject<Settings>(json);
+            //return settings;
+            Settings settings = new Settings();
+            settings.app_name = "XTime Parser";
+            settings.product_folder = "XTime";
+            settings.version_file = "version.json";
+            settings.update_url = "https://asemenets.com";
+
             return settings;
 
         }

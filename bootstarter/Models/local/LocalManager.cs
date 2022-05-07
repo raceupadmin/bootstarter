@@ -14,10 +14,11 @@ namespace bootstarter.Models.local
     public class LocalManager : ILocalManager
     {
         #region vars
-        Paths paths = Paths.getInstance();
+        IPaths paths;
         #endregion
-        public LocalManager()
+        public LocalManager(IPaths paths)
         {
+            this.paths = paths;
         }
 
         #region public

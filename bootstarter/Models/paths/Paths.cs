@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,27 +23,19 @@ namespace bootstarter.Models.paths
 
         private static Paths instance;
 
-        private Paths(string os)
+        private Paths(bool ismacosx)
         {
-            //var settings = loadSettings();
-            switch (os)
-            {
-                case "mac":
-                    initPathsMac();
-                    break;
-                case "win":                    
-                    break;
-                default:
-                    break;
-            }
-            
+            if (ismacosx)
+                initPathsMac();
+            else
+                initPathsWin();
         }
 
-        public static Paths getInstance()
+        public static Paths getInstance(bool ismacosx)
         {   
             if (instance == null)
-                instance = new Paths("mac");
-            return instance;
+                instance = new Paths(ismacosx);
+            return instance;        
         }
 
         #region private
@@ -59,6 +52,43 @@ namespace bootstarter.Models.paths
 
             return settings;
 
+        }
+        void initPathsWin()
+        {
+            Settings settings = loadSettings();
+            string user_path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            string product_path = Path.Combine(user_path,
+                                                "Library",
+                                                "Application Support",
+                                                settings.product_folder);
+            if (!Directory.Exists(product_path))
+                Directory.CreateDirectory(product_path);
+
+            string app_dir = Path.Combine(user_path,
+                                            "Library",
+                                            "Application Support",
+                                            settings.product_folder,
+                                            settings.app_name);
+            if (!Directory.Exists(app_dir))
+                Directory.CreateDirectory(app_dir);
+
+            string tmp_path = Path.Combine(app_dir, "tmp");
+            if (!Directory.Exists(tmp_path))
+                Directory.CreateDirectory(tmp_path);
+
+            TmpDir = tmp_path;
+
+            VerURL = $"{settings.update_url}/{settings.version_file}";
+
+            VerPath = Path.Combine(app_dir, settings.version_file);
+
+            ZipURL = $"{settings.update_url}/{settings.app_name}.zip".Replace(" ", "%20");
+
+            ZipPath = Path.Combine(app_dir, $"{settings.app_name}.zip");
+
+            AppDir = app_dir;
+
+            AppPath = Path.Combine(app_dir, $"{settings.app_name}.exe");
         }
         void initPathsMac()
         {            

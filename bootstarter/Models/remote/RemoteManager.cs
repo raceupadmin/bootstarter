@@ -11,13 +11,12 @@ namespace bootstarter.Models.remote
     public class RemoteManager : IRemoteManager
     {
         #region vars
-        Paths paths = Paths.getInstance();
-        string url;
+        IPaths paths;        
         WebClient webClient;
         #endregion
-        public RemoteManager(string url)
+        public RemoteManager(IPaths paths)
         {
-            this.url = url; 
+            this.paths = paths;            
             webClient = new WebClient();
             webClient.DownloadProgressChanged += (sender, arg) => {
 

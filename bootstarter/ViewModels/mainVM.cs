@@ -12,6 +12,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Net;
 using System.Reactive;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -76,41 +77,27 @@ namespace bootstarter.ViewModels
             Status = "";
             IsProgress = false;
 
-            #region dependencies
-           
-                paths = Paths.getInstance();
-            
+            #region dependencies           
 
-            remoteManager = new RemoteManager(paths.VerURL);
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                paths = Paths.getInstance(true);
+                console = new bash(paths);
+            } else
+            {
+                paths = Paths.getInstance(false);
+                console = new cmd(paths);
+            }
+            
+            remoteManager = new RemoteManager(paths);
             remoteManager.ProgressChangedEvent += (p, t) => {
                 Progress = (float)(p * 100f / t);
             };
-
-            localManager = new LocalManager();
-            console = new bash(paths);
+            localManager = new LocalManager(paths);            
             #endregion
 
             #region commands
             updateCmd = ReactiveCommand.Create(() => {
-
-                //string user_path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-                //string app_path = Path.Combine(user_path, $"Library", $"Application Support", $"XTime");
-                //if (!Directory.Exists(app_path))
-                //    Directory.CreateDirectory(app_path);
-                //WebClient client = new WebClient();
-                //string zip_paht = Path.Combine(app_path, "tmp.zip");
-                //client.DownloadFile("https://asemenets.com/test.zip", zip_paht);
-
-                //using (var archive = ZipFile.Open(zip_paht, ZipArchiveMode.Update))
-                //{
-                //    archive.ExtractToDirectory(app_path);
-                //}
-
-                //File.Delete(zip_paht);
-
-
-
-
             });
             #endregion
         }
@@ -134,27 +121,27 @@ namespace bootstarter.ViewModels
                     await remoteManager.GetArchive();               
                     localManager.UnZipApp();
                     localManager.UpdateVersionFile(remoteVersion);
-
+                    IsProgress = false;
                 }
-
-                IsProgress = false;
-                Status = "Запуск...";
-
-                await Task.Run(() => {
-                    Thread.Sleep(2000);
-                });
-
-                console.Startup();
-
-                Process.GetCurrentProcess().Kill(); 
-
-                //start app
-
+                
             } catch (Exception ex)
             {
                 IsProgress = false;
-                Status = "Не удалось проверить обновления";
-                
+                Status = "Не удалось загрузить обновление";                
+            }
+
+            try
+            {                
+                Status = "Запуск...";
+                await Task.Run(() => {
+                    Thread.Sleep(2000);
+                });
+                console.Startup();
+                Process.GetCurrentProcess().Kill();
+
+            } catch (Exception ex)
+            {
+                Status = "Не удалось запустить приложение";
             }
 
         }

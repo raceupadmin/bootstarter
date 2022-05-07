@@ -52,7 +52,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Update="settings.json">
+    <None Update="Assets\settings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

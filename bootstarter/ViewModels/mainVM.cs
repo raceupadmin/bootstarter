@@ -72,7 +72,7 @@ namespace bootstarter.ViewModels
         {
 
             AppName = "Parser";
-            AppVersion = "1.1";
+            AppVersion = "";
             Status = "";
             IsProgress = false;
 
@@ -118,6 +118,9 @@ namespace bootstarter.ViewModels
         {
 
             Status = "Проверка обновлений...";
+            await Task.Run(() => {
+                Thread.Sleep(2000);
+            });
 
             try
             {
@@ -134,7 +137,7 @@ namespace bootstarter.ViewModels
 
                 }
 
-                //IsProgress = false;
+                IsProgress = false;
                 Status = "Запуск...";
 
                 await Task.Run(() => {
@@ -149,7 +152,9 @@ namespace bootstarter.ViewModels
 
             } catch (Exception ex)
             {
-                //show error msg
+                IsProgress = false;
+                Status = "Не удалось проверить обновления";
+                
             }
 
         }

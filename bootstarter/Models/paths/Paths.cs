@@ -48,7 +48,7 @@ namespace bootstarter.Models.paths
             settings.app_name = "XTime CRM";
             settings.product_folder = "XTime";
             settings.version_file = "version.json";
-            settings.update_url = "https://asemenets.com";
+            settings.update_url = "https://asemenets.com/crm";
 
             return settings;
 

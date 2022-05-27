@@ -72,7 +72,7 @@ namespace bootstarter.ViewModels
         public mainVM()
         {
 
-            AppName = "Parser";
+            AppName = "CRM";
             AppVersion = "";
             Status = "";
             IsProgress = false;

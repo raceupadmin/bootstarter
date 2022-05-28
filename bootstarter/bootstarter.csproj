@@ -21,13 +21,18 @@
 	<!-- Will be copied from output directory -->
 	<NSPrincipalClass>NSApplication</NSPrincipalClass>
 	<NSHighResolutionCapable>true</NSHighResolutionCapable>
+	<ApplicationIcon>crm.ico</ApplicationIcon>
 
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
     <None Remove=".gitignore" />
+    <None Remove="Assets\crm.ico" />
     <None Remove="Assets\parser.png" />
     <None Remove="Assets\xtime_trim.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="crm.ico" />
   </ItemGroup>
   <ItemGroup>
     <!--This helps with theme dll-s trimming.

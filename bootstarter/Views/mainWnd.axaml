@@ -10,7 +10,8 @@
 		ExtendClientAreaToDecorationsHint="True"
         ExtendClientAreaChromeHints="NoChrome"
         ExtendClientAreaTitleBarHeightHint="-1"
-		WindowStartupLocation="CenterScreen">
+		WindowStartupLocation="CenterScreen"
+		Icon="avares://bootstarter/Assets/crm.ico">
 	
     <Design.DataContext>
         <vm:mainVM/>

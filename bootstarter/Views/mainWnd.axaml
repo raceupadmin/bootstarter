@@ -11,6 +11,7 @@
         ExtendClientAreaChromeHints="NoChrome"
         ExtendClientAreaTitleBarHeightHint="-1"
 		WindowStartupLocation="CenterScreen"
+		Title="XTime CRM"
 		Icon="avares://bootstarter/Assets/crm.ico">
 	
     <Design.DataContext>

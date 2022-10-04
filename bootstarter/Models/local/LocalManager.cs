@@ -50,8 +50,8 @@ namespace bootstarter.Models.local
                     Directory.Delete(macos_path, true);
 
                 using (var archive = ZipFile.Open(paths.ZipPath, ZipArchiveMode.Update))
-                {
-                    archive.ExtractToDirectory(paths.AppDir);
+                {                    
+                    archive.ExtractToDirectory(paths.AppDir, true);
                 }
 
                 File.Delete(paths.ZipPath);

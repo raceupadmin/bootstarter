@@ -45,8 +45,8 @@ namespace bootstarter.Models.paths
             //Settings settings = JsonConvert.DeserializeObject<Settings>(json);
             //return settings;
             Settings settings = new Settings();
-            settings.app_name = "XTime CRM";
-            settings.product_folder = "XTime";
+            settings.app_name = "RaceUP CRM";
+            settings.product_folder = "RaceUP";
             settings.version_file = "version.json";
             settings.update_url = "https://asemenets.com/crm";
 

@@ -88,12 +88,13 @@ namespace bootstarter.ViewModels
                 paths = Paths.getInstance(false);
                 console = new cmd(paths);
             }
-            
+
             remoteManager = new RemoteManager(paths);
-            remoteManager.ProgressChangedEvent += (p, t) => {
+            remoteManager.ProgressChangedEvent += (p, t) =>
+            {
                 Progress = (float)(p * 100f / t);
             };
-            localManager = new LocalManager(paths);            
+            localManager = new LocalManager(paths);
             #endregion
 
             #region commands

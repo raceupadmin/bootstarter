@@ -35,7 +35,7 @@
             Width="90"/>
 
         <TextBlock
-		    Text="Проверка обновлений"
+		    Text="{Binding Status}"
 			HorizontalAlignment="Center"
             VerticalAlignment="Bottom"
             Margin="15"/>

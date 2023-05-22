@@ -19,6 +19,7 @@ namespace bootstarter.Models.paths
         public string TmpDir { get; set; }
         public string VerURL { get; set; }
         public string ZipURL { get; set; }
+        public string BootStarterPath { get; set; }
         #endregion
 
         private static Paths instance;
@@ -56,6 +57,8 @@ namespace bootstarter.Models.paths
         void initPathsWin()
         {
             Settings settings = loadSettings();
+            string bootstarter_path = Environment.CurrentDirectory.ToString();
+            BootStarterPath = Path.Combine(bootstarter_path, $"{settings.app_name}.exe");
             string user_path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             string product_path = Path.Combine(user_path,
                                                 "Library",
@@ -93,6 +96,8 @@ namespace bootstarter.Models.paths
         void initPathsMac()
         {            
             Settings settings = loadSettings();
+            string bootstarter_path = Environment.CurrentDirectory.ToString();
+            BootStarterPath = Path.Combine(bootstarter_path, $"{settings.app_name}.app");
             string user_path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             string product_path = Path.Combine(user_path,
                                                 "Library",

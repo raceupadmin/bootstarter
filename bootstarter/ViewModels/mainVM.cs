@@ -1,4 +1,5 @@
 using Avalonia.Threading;
+using bootstarter.Models.bootstarterpath;
 using bootstarter.Models.consoles;
 using bootstarter.Models.local;
 using bootstarter.Models.paths;
@@ -123,6 +124,9 @@ namespace bootstarter.ViewModels
                     localManager.UnZipApp();
                     localManager.UpdateVersionFile(remoteVersion);
                     IsProgress = false;
+                    BootStarterFileConfig bs_config = new BootStarterFileConfig(paths.AppDir);
+                    bs_config.BootStarterPath = paths.BootStarterPath;
+                    bs_config.Save();
                 }
                 
             } catch (Exception ex)

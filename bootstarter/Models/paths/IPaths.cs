@@ -15,5 +15,6 @@ namespace bootstarter.Models.paths
         public string TmpDir { get; set; }
         public string VerURL { get; set; }
         public string ZipURL { get; set; }
+        public string BootStarterPath { get; set; }
     }
 }

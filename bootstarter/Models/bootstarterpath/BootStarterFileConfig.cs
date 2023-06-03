@@ -25,12 +25,8 @@ namespace bootstarter.Models.bootstarterpath
         }
         public BootStarterFileConfig(string app_path)
         {
-
-            combine_filename = Path.Combine(app_path, "Bootstarter.json");
-            if (File.Exists(combine_filename))
-            {
-                storage = new Storage<BootStarterFileConfig>(combine_filename, this);
-            }
+            combine_filename = Path.Combine(app_path, "bootstarter.json");
+            storage = new Storage<BootStarterFileConfig>(combine_filename, this);
         }
         #region public
         public void Load()

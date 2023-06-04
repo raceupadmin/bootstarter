@@ -58,7 +58,11 @@ namespace bootstarter.Models.paths
         {
             Settings settings = loadSettings();
             string bootstarter_path = Environment.CurrentDirectory.ToString();
+#if DEBUG
+            BootStarterPath = Path.Combine(bootstarter_path, "bootstarter.exe");
+#elif RELEASE
             BootStarterPath = Path.Combine(bootstarter_path, $"{settings.app_name}.exe");
+#endif
             string user_path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             string product_path = Path.Combine(user_path,
                                                 "Library",
@@ -97,7 +101,11 @@ namespace bootstarter.Models.paths
         {            
             Settings settings = loadSettings();
             string bootstarter_path = Environment.CurrentDirectory.ToString();
+#if DEBUG
+            BootStarterPath = Path.Combine(bootstarter_path, "bootstarter.app");
+#elif RELEASE
             BootStarterPath = Path.Combine(bootstarter_path, $"{settings.app_name}.app");
+#endif
             string user_path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             string product_path = Path.Combine(user_path,
                                                 "Library",
@@ -133,7 +141,7 @@ namespace bootstarter.Models.paths
             AppPath = Path.Combine(app_dir, $"{settings.app_name}.app");
 
         }        
-        #endregion
+#endregion
     }
 
     public class Settings

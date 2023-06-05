@@ -57,9 +57,4 @@
       <DependentUpon>mainWnd.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <None Update="Assets\settings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
 </Project>

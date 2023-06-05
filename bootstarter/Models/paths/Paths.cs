@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -100,12 +101,27 @@ namespace bootstarter.Models.paths
         void initPathsMac()
         {            
             Settings settings = loadSettings();
-            string bootstarter_path = Environment.CurrentDirectory.ToString();
+            //string bootstarter_path = Directory.GetCurrentDirectory();
+            string bootstarter_path = System.AppContext.BaseDirectory;
+            string[] splt = bootstarter_path.Split("/");
+            var appElement = splt.FirstOrDefault(e => e.Contains(".app"));
+
+            if (appElement != null)
+            {
+                int index = bootstarter_path.IndexOf(appElement);
+                int length = bootstarter_path.Length;
+                bootstarter_path = bootstarter_path.Remove(index, length - index);
+            }
+
+
 #if DEBUG
             BootStarterPath = Path.Combine(bootstarter_path, "bootstarter.app");
-#elif RELEASE
+#else
             BootStarterPath = Path.Combine(bootstarter_path, $"{settings.app_name}.app");
 #endif
+
+            BootStarterPath = Path.GetFullPath(BootStarterPath);
+
             string user_path = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             string product_path = Path.Combine(user_path,
                                                 "Library",
@@ -140,8 +156,11 @@ namespace bootstarter.Models.paths
 
             AppPath = Path.Combine(app_dir, $"{settings.app_name}.app");
 
-        }        
-#endregion
+            //File.WriteAllText(Path.Combine(AppDir, "test.txt"), bootstarter_path);
+
+
+        }
+        #endregion
     }
 
     public class Settings
